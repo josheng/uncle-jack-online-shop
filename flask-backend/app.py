@@ -42,6 +42,7 @@ class Product(db.Model):
     description = db.Column(db.Text, nullable=False)
     price = db.Column(db.Float, nullable=False)
     image = db.Column(db.String(200), nullable=True)
+    category = db.Column(db.String(50), nullable=False)
 
     def __repr__(self):
         return f'<Product {self.name}>'
@@ -62,21 +63,21 @@ class UserActivity(db.Model):
 def seed_product():
     # product dict
     products = [
-        {'name': 'Milo', 'description': 'Chocolate Malt Drink', 'price': 4.99, 'image_path': './img/drinks/milo.webp'},
-        {'name': '100 Plus', 'description': 'Isotonic Drink', 'price': 8.99, 'image_path': './img/drinks/100plus.webp'},
-        {'name': 'Oolong Tea', 'description': 'Tea Brewed from the Mountains', 'price': 3.99, 'image_path': './img/drinks/oolong.webp'},
-        {'name': 'Dasani Water', 'description': 'Mineral Water', 'price': 1.50, 'image_path': './img/drinks/dasani.webp'},
-        {'name': 'Cheese', 'description': 'Made from Real Cow!', 'price': 12.99, 'image_path': './img/dairy/cheese.webp'},
-        {'name': 'Egg', 'description': 'Packed with nutrients!', 'price': 3.50, 'image_path': './img/dairy/egg.webp'},
-        {'name': 'Milk', 'description': 'Made from Real Cow!', 'price': 6.45, 'image_path': './img/dairy/milk.webp'},
-        {'name': 'Gardenia White Bread', 'description': 'Just a white bread.', 'price': 3.00, 'image_path': './img/breads/gardenia.webp'},
-        {'name': 'Sunshine White Bread', 'description': 'White Bread from Sunshine!', 'price': 2.80, 'image_path': './img/breads/sunshine.webp'},
-        {'name': 'Sunshine Whole Grain', 'description': 'Very Healthy Bread!', 'price': 3.80, 'image_path': './img/breads/wholegrain.webp'},
+        {'name': 'Milo', 'description': 'Chocolate Malt Drink', 'price': 4.99, 'image_path': './img/drinks/milo.webp', 'category': 'drinks'},
+        {'name': '100 Plus', 'description': 'Isotonic Drink', 'price': 8.99, 'image_path': './img/drinks/100plus.webp', 'category': 'drinks'},
+        {'name': 'Oolong Tea', 'description': 'Tea Brewed from the Mountains', 'price': 3.99, 'image_path': './img/drinks/oolong.webp', 'category': 'drinks'},
+        {'name': 'Dasani Water', 'description': 'Mineral Water', 'price': 1.50, 'image_path': './img/drinks/dasani.webp', 'category': 'drinks'},
+        {'name': 'Cheese', 'description': 'Made from Real Cow!', 'price': 12.99, 'image_path': './img/dairy/cheese.webp', 'category': 'dairy'},
+        {'name': 'Egg', 'description': 'Packed with nutrients!', 'price': 3.50, 'image_path': './img/dairy/egg.webp', 'category': 'dairy'},
+        {'name': 'Milk', 'description': 'Made from Real Cow!', 'price': 6.45, 'image_path': './img/dairy/milk.webp', 'category': 'dairy'},
+        {'name': 'Gardenia White Bread', 'description': 'Just a white bread.', 'price': 3.00, 'image_path': './img/breads/gardenia.webp', 'category': 'breads'},
+        {'name': 'Sunshine White Bread', 'description': 'White Bread from Sunshine!', 'price': 2.80, 'image_path': './img/breads/sunshine.webp', 'category': 'breads'},
+        {'name': 'Sunshine Whole Grain', 'description': 'Very Healthy Bread!', 'price': 3.80, 'image_path': './img/breads/wholegrain.webp', 'category': 'breads'},
     ]
 
     for product in products:
         # Create product object and add to database session
-        new_product = Product(name=product['name'], description=product['description'], price=product['price'], image=product['image_path'])
+        new_product = Product(name=product['name'], description=product['description'], price=product['price'], image=product['image_path'], category=product['category'])
         print(f"Adding {new_product.name} to database")
         db.session.add(new_product)
 
@@ -91,7 +92,7 @@ with app.app_context():
     db.create_all()
     seed_product()
 
-# write a get function to retrieve all products
+# retrieve all products
 @app.route('/products', methods=['GET'])
 def get_products():
     products = Product.query.all()
@@ -101,7 +102,77 @@ def get_products():
             "name": product.name,
             "description": product.description,
             "price": product.price,
-            "image": product.image
+            "image": product.image,
+            "category": product.category
         } for product in products]
 
     return jsonify(results)
+
+# create a new product
+@app.route('/products', methods=['POST'])
+def create_product():
+    # get the request body
+    body = request.get_json()
+    # create a new product
+    try:
+        imgbody = body['image']
+    except KeyError:
+        imgbody = None
+    new_product = Product(name=body['name'], description=body['description'],
+                            price=body['price'],
+                            image=imgbody, category=body['category'])
+    # add the new product to the database
+    db.session.add(new_product)
+    # commit the changes
+    db.session.commit()
+
+    return jsonify({
+        "message": "New product created!",
+        "success": True
+    })
+
+# update a product
+@app.route('/products/<int:id>', methods=['PATCH'])
+def update_product(id):
+    # get the product to update
+    product = Product.query.get(id)
+
+    if product is None:
+        abort(404)
+
+    # get the request body
+    body = request.get_json()
+
+    # update the product
+    product.name = body['name']
+    product.description = body['description']
+    product.price = body['price']
+    product.image = body['image']
+    product.category = body['category']
+
+    # commit the changes
+    db.session.commit()
+
+    return jsonify({
+        "message": "Product updated!",
+        "success": True
+    })
+
+# delete a product
+@app.route('/products/<int:id>', methods=['DELETE'])
+def delete_product(id):
+    # get the product to delete
+    product = Product.query.get(id)
+
+    if product is None:
+        abort(404)
+
+    # delete the product
+    db.session.delete(product)
+    # commit the changes
+    db.session.commit()
+
+    return jsonify({
+        "message": "Product deleted!",
+        "success": True
+    })
