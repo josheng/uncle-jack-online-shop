@@ -53,3 +53,16 @@ Backend Flask API is hosted on:
 ```
 engch28.pythonanywhere.com
 ```
+React App is hosted on:
+```
+https://moonlit-kitten-862a7c.netlify.app/
+```
+
+### Things to improve on
+Due to time constraints, some function was not implemented which i will do so at my own time at a later date.
+- Authentication using Flask JWT
+- Login and Signup on frontend
+- An actual shopping cart
+- Product quantity
+- Sort product by price
+- Better overall frontend design.
