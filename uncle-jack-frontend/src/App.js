@@ -1,8 +1,9 @@
 import './App.css';
 import HeaderBar from './components/header/header';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import CarouselBanner from './components/carousell/carousel';
-import ProductCard from './components/products/products';
+import ProductPage from './components/products/productpage';
+import { Route, Routes } from 'react-router-dom';
+import AdminPage from './components/admin/adminpage';
 
 function App() {
   return (
@@ -11,8 +12,10 @@ function App() {
         <HeaderBar />
       </header>
       <body>
-        <CarouselBanner />
-        <ProductCard />
+        <Routes>
+          <Route path='/' element={<ProductPage />} />
+          <Route path='/admin' element={<AdminPage />} />
+        </Routes>
       </body>
     </div>
   );

@@ -18,8 +18,8 @@ function HeaderBar() {
               style={{ maxHeight: '100px' }}
               navbarScroll
               >
-              <Nav.Link href="#action1">Products</Nav.Link>
-              <Nav.Link href="#action2">Admin</Nav.Link>
+              <Nav.Link href="/">Products</Nav.Link>
+              <Nav.Link href="/admin">Admin</Nav.Link>
             </Nav>
             <Form className="d-flex">
               <Form.Control
