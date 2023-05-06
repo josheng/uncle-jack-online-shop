@@ -6,6 +6,7 @@ import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import "./productlist.css"
 import AddProduct from './addproduct';
+import DOMPurify from 'dompurify';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -21,6 +22,18 @@ const ProductList = () => {
     }
     fetchProducts();
   }, []);
+
+  function sanitizeInput(input) {
+    const sanitized = {};
+    for (const [key, value] of Object.entries(input)) {
+      if (typeof value === 'string') {
+        sanitized[key] = DOMPurify.sanitize(value);
+      } else {
+        sanitized[key] = value;
+      }
+    }
+    return sanitized;
+  }
 
   const logActions = (msg) => {
     // log actions
@@ -57,14 +70,14 @@ const ProductList = () => {
   const handleSaveClick = (id) => {
     // Find the product being edited
     const product = products.find((p) => p.id === id);
-
+    const sanitizedData = sanitizeInput(product);
     // Send a PATCH request to the API to update the product
     fetch(`http://127.0.0.1:5000/products/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(product),
+      body: JSON.stringify(sanitizedData),
     })
       .then((response) => response.json())
       .then((data) => {

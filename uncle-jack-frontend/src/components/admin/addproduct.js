@@ -3,6 +3,8 @@ import Alert from 'react-bootstrap/Alert'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
+import DOMPurify from 'dompurify';
+
 
 const AddProduct = () => {
   const [products, setProducts] = useState([]);
@@ -16,6 +18,19 @@ const AddProduct = () => {
     image: '',
     price: 0,
   });
+
+function sanitizeInput(input) {
+  const sanitized = {};
+  for (const [key, value] of Object.entries(input)) {
+    if (typeof value === 'string') {
+      sanitized[key] = DOMPurify.sanitize(value);
+    } else {
+      sanitized[key] = value;
+    }
+  }
+  return sanitized;
+}
+
 
   const handleAddModalOpen = () => setShowAddModal(true);
   const handleAddModalClose = () => {
@@ -59,13 +74,13 @@ const AddProduct = () => {
 
   const handleAddProductSubmit = (event) => {
     event.preventDefault();
-
+    const sanitizedData = sanitizeInput(newProduct);
     fetch('http://127.0.0.1:5000/products', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newProduct),
+      body: JSON.stringify(sanitizedData),
     })
       .then((response) => response.json())
       .then((data) => {
