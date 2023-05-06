@@ -7,7 +7,7 @@ const UserActivity = () => {
 
   useEffect(() => {
     async function fetchActivity() {
-      const response = await fetch('http://127.0.0.1:5000/user_activity');
+      const response = await fetch('http://engch28.pythonanywhere.com/user_activity');
       const data = await response.json();
       setActivity(data);
     }

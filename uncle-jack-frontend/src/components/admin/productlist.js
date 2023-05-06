@@ -16,7 +16,7 @@ const ProductList = () => {
 
   useEffect(() => {
     async function fetchProducts() {
-      const response = await fetch('http://127.0.0.1:5000/products');
+      const response = await fetch('http://engch28.pythonanywhere.com/products');
       const data = await response.json();
       setProducts(data);
     }
@@ -37,7 +37,7 @@ const ProductList = () => {
 
   const logActions = (msg) => {
     // log actions
-    fetch(`http://127.0.0.1:5000/user_activity`, {
+    fetch(`http://engch28.pythonanywhere.com/user_activity`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ const ProductList = () => {
     const product = products.find((p) => p.id === id);
     const sanitizedData = sanitizeInput(product);
     // Send a PATCH request to the API to update the product
-    fetch(`http://127.0.0.1:5000/products/${id}`, {
+    fetch(`http://engch28.pythonanywhere.com/products/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ const ProductList = () => {
 
   const handleDeleteClick = (id) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
-      fetch(`http://127.0.0.1:5000/products/${id}`, {
+      fetch(`http://engch28.pythonanywhere.com/products/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

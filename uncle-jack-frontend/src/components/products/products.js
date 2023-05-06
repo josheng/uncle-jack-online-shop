@@ -14,7 +14,7 @@ function ProductCard() {
 
   useEffect(() => {
     async function fetchProducts() {
-      const response = await fetch('http://127.0.0.1:5000/products');
+      const response = await fetch('http://engch28.pythonanywhere.com/products');
       const data = await response.json();
       setProducts(data);
     }

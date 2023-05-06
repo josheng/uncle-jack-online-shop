@@ -54,7 +54,7 @@ function sanitizeInput(input) {
 
   const logActions = () => {
     // log actions
-    fetch(`http://127.0.0.1:5000/user_activity`, {
+    fetch(`http://engch28.pythonanywhere.com/user_activity`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ function sanitizeInput(input) {
   const handleAddProductSubmit = (event) => {
     event.preventDefault();
     const sanitizedData = sanitizeInput(newProduct);
-    fetch('http://127.0.0.1:5000/products', {
+    fetch('http://engch28.pythonanywhere.com/products', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
