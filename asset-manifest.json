@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/uncle-jack-online-shop/static/css/main.cd5b3d81.css",
-    "main.js": "/uncle-jack-online-shop/static/js/main.e02a35c7.js",
+    "main.js": "/uncle-jack-online-shop/static/js/main.a2bf36ce.js",
     "static/js/787.33014cc0.chunk.js": "/uncle-jack-online-shop/static/js/787.33014cc0.chunk.js",
     "static/media/carousel3.jpg": "/uncle-jack-online-shop/static/media/carousel3.72025d7489d10106f607.jpg",
     "static/media/carousel2.jpg": "/uncle-jack-online-shop/static/media/carousel2.f11683690d82a6958b0a.jpg",
     "index.html": "/uncle-jack-online-shop/index.html",
     "main.cd5b3d81.css.map": "/uncle-jack-online-shop/static/css/main.cd5b3d81.css.map",
-    "main.e02a35c7.js.map": "/uncle-jack-online-shop/static/js/main.e02a35c7.js.map",
+    "main.a2bf36ce.js.map": "/uncle-jack-online-shop/static/js/main.a2bf36ce.js.map",
     "787.33014cc0.chunk.js.map": "/uncle-jack-online-shop/static/js/787.33014cc0.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.cd5b3d81.css",
-    "static/js/main.e02a35c7.js"
+    "static/js/main.a2bf36ce.js"
   ]
 }
