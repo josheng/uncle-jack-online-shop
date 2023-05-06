@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/josheng/uncle-jack-online-shop/static/css/main.cd5b3d81.css",
-    "main.js": "/josheng/uncle-jack-online-shop/static/js/main.ae14e0cd.js",
+    "main.js": "/josheng/uncle-jack-online-shop/static/js/main.4a6c752c.js",
     "static/js/787.33014cc0.chunk.js": "/josheng/uncle-jack-online-shop/static/js/787.33014cc0.chunk.js",
     "static/media/carousel3.jpg": "/josheng/uncle-jack-online-shop/static/media/carousel3.72025d7489d10106f607.jpg",
     "static/media/carousel2.jpg": "/josheng/uncle-jack-online-shop/static/media/carousel2.f11683690d82a6958b0a.jpg",
     "index.html": "/josheng/uncle-jack-online-shop/index.html",
     "main.cd5b3d81.css.map": "/josheng/uncle-jack-online-shop/static/css/main.cd5b3d81.css.map",
-    "main.ae14e0cd.js.map": "/josheng/uncle-jack-online-shop/static/js/main.ae14e0cd.js.map",
+    "main.4a6c752c.js.map": "/josheng/uncle-jack-online-shop/static/js/main.4a6c752c.js.map",
     "787.33014cc0.chunk.js.map": "/josheng/uncle-jack-online-shop/static/js/787.33014cc0.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.cd5b3d81.css",
-    "static/js/main.ae14e0cd.js"
+    "static/js/main.4a6c752c.js"
   ]
 }
