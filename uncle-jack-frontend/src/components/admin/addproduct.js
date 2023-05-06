@@ -37,6 +37,26 @@ const AddProduct = () => {
     }));
   };
 
+  const logActions = () => {
+    // log actions
+    fetch(`http://127.0.0.1:5000/user_activity`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: 1,
+        activity_type: "created a new product",
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('failed to create log');
+        }
+      })
+      .catch((error) => console.error(error));
+  };
+
   const handleAddProductSubmit = (event) => {
     event.preventDefault();
 
@@ -53,13 +73,15 @@ const AddProduct = () => {
         setProducts((prevState) => [...prevState, data]);
         handleAddModalClose();
         setShowSuccessAlert(true);
-        window.location.reload();
+        logActions()
+        // window.location.reload();
       })
       .catch((error) => {
         console.error(error)
         setShowErrorAlert(true);
       });
   };
+
 
   return (
     <>

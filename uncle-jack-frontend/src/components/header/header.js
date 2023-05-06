@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import "./header.css"
 
 function HeaderBar() {
@@ -19,17 +20,11 @@ function HeaderBar() {
               navbarScroll
               >
               <Nav.Link href="/">Products</Nav.Link>
-              <Nav.Link href="/admin">Admin</Nav.Link>
+              <NavDropdown title="Admin" id="navbarScrollingDropdown">
+                <NavDropdown.Item href="/admin">Product List</NavDropdown.Item>
+                <NavDropdown.Item href="/admin/user_activity">User Activity</NavDropdown.Item>
+              </NavDropdown>
             </Nav>
-            <Form className="d-flex">
-              <Form.Control
-                type="search"
-                placeholder="Search"
-                className="me-2"
-                aria-label="Search"
-                />
-              <Button variant="outline-success">Search</Button>
-            </Form>
           </Navbar.Collapse>
         </Container>
       </Navbar>

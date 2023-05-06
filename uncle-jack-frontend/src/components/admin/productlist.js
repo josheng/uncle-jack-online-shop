@@ -22,6 +22,26 @@ const ProductList = () => {
     fetchProducts();
   }, []);
 
+  const logActions = (msg) => {
+    // log actions
+    fetch(`http://127.0.0.1:5000/user_activity`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: 1,
+        activity_type: msg,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('failed to create log');
+        }
+      })
+      .catch((error) => console.error(error));
+  };
+
   const handleEditClick = (id) => {
     setEditableCell(id === editableCell ? null : id);
   };
@@ -55,6 +75,7 @@ const ProductList = () => {
         setProducts(updatedProducts);
         setEditableCell(null);
         setShowSuccessAlert(true);
+        logActions("updated a product");
       })
       .catch((error) => {
         console.log(error)
@@ -80,6 +101,7 @@ const ProductList = () => {
         .then((data) => {
           setProducts(products.filter((p) => p.id !== id));
           setShowSuccessAlert(true);
+          logActions("deleted a product");
         })
         .catch((error) => {
           console.error(error);

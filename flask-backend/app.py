@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, request, abort
 from flask_sqlalchemy import SQLAlchemy
-import psycopg2
-# import ipdb
+# from flask_jwt_extended import (JWTManager, jwt_required, create_access_token, get_jwt_identity)
 from datetime import datetime
 import os
 from dotenv import load_dotenv
@@ -19,8 +18,10 @@ DB_USER = os.environ.get('DB_USER')
 db = SQLAlchemy()
 app = Flask(__name__)
 CORS(app)
+# jwt = JWTManager(app)
 # Configure the database connection
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{DB_HOST}/{DB_NAME}'
+# app.config['JWT_SECRET_KEY'] = 'super-secret' # change this to a secure key in production
 
 db.init_app(app)
 
@@ -28,8 +29,7 @@ class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(120), nullable=False)
+    password_hash = db.Column(db.String(128))
     role = db.Column(db.String(80), nullable=False)
 
     def __repr__(self):
@@ -86,12 +86,30 @@ def seed_product():
     db.session.commit()
     print('Database seeded!')
 
+# seed 1 user with admin role
+def seed_user():
+    # Create an admin user
+    admin_user = User(username='jack', password_hash='pbkdf2:sha256:150000$wJkxWx2d$2b3c3a9c1f8d9f7cbea0a0c4e4a8f4e4f4b4e4a8f4e4a8f4e4a8f4e4a8f4e4a8', role='admin')
+    db.session.add(admin_user)
+    db.session.commit()
+    print('User seeded!')
+
+#sed 1 user activity
+def seed_user_activity():
+    # Create an admin user
+    user_activity = UserActivity(user_id=1, activity_type='login', timestamp=datetime.now())
+    db.session.add(user_activity)
+    db.session.commit()
+    print('User Activity seeded!')
+
 with app.app_context():
     print('Dropping all tables...')
     db.drop_all()
     print('Creating all tables...')
     db.create_all()
     seed_product()
+    seed_user()
+    seed_user_activity()
 
 # retrieve all products
 @app.route('/products', methods=['GET'])
@@ -178,3 +196,59 @@ def delete_product(id):
         "message": "Product deleted!",
         "success": True
     })
+
+# create a endpoint to add a new user activity
+@app.route('/user_activity', methods=['POST'])
+def create_user_activity():
+    # get the request body
+    body = request.get_json()
+    # create a new user activity
+    new_user_activity = UserActivity(user_id=body['user_id'], activity_type=body['activity_type'], timestamp=datetime.now())
+    # add the new user activity to the database
+    db.session.add(new_user_activity)
+    # commit the changes
+    db.session.commit()
+
+    return jsonify({
+        "message": "action logged",
+        "success": True
+    })
+
+# retrieve all user activities
+@app.route('/user_activity', methods=['GET'])
+def get_user_activity():
+    user_activities = UserActivity.query.all()
+    results = [
+        {
+            "id": user_activity.id,
+            "user_id": user_activity.user_id,
+            "activity_type": user_activity.activity_type,
+            "timestamp": user_activity.timestamp
+        } for user_activity in user_activities]
+    response = jsonify(results)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+# get all user
+@app.route('/users', methods=['GET'])
+def get_users():
+    users = User.query.all()
+    results = [
+        {
+            "id": user.id,
+            "username": user.username,
+            "role": user.role
+        } for user in users]
+    response = jsonify(results)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+# @app.route('/login', methods=['POST'])
+# def login():
+#     username = request.json.get('username')
+#     password = request.json.get('password')
+#     if username != 'admin' or password != 'password':
+#         return jsonify({'message': 'Invalid credentials'}), 401
+
+#     access_token = create_access_token(identity=username)
+#     return jsonify({'access_token': access_token}), 200
