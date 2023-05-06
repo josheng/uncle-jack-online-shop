@@ -1,0 +1,4 @@
+/* reduce the font size of Nav.Link */
+.nav-link {
+  font-size: 0.5rem;
+}
