@@ -6,6 +6,7 @@ from datetime import datetime
 import os
 from dotenv import load_dotenv
 from setup.create_db import create_database
+from flask_cors import CORS
 
 create_database()
 load_dotenv()
@@ -17,7 +18,7 @@ DB_USER = os.environ.get('DB_USER')
 
 db = SQLAlchemy()
 app = Flask(__name__)
-
+CORS(app)
 # Configure the database connection
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{DB_HOST}/{DB_NAME}'
 
@@ -63,16 +64,16 @@ class UserActivity(db.Model):
 def seed_product():
     # product dict
     products = [
-        {'name': 'Milo', 'description': 'Chocolate Malt Drink', 'price': 4.99, 'image_path': './img/drinks/milo.webp', 'category': 'drinks'},
-        {'name': '100 Plus', 'description': 'Isotonic Drink', 'price': 8.99, 'image_path': './img/drinks/100plus.webp', 'category': 'drinks'},
-        {'name': 'Oolong Tea', 'description': 'Tea Brewed from the Mountains', 'price': 3.99, 'image_path': './img/drinks/oolong.webp', 'category': 'drinks'},
-        {'name': 'Dasani Water', 'description': 'Mineral Water', 'price': 1.50, 'image_path': './img/drinks/dasani.webp', 'category': 'drinks'},
-        {'name': 'Cheese', 'description': 'Made from Real Cow!', 'price': 12.99, 'image_path': './img/dairy/cheese.webp', 'category': 'dairy'},
-        {'name': 'Egg', 'description': 'Packed with nutrients!', 'price': 3.50, 'image_path': './img/dairy/egg.webp', 'category': 'dairy'},
-        {'name': 'Milk', 'description': 'Made from Real Cow!', 'price': 6.45, 'image_path': './img/dairy/milk.webp', 'category': 'dairy'},
-        {'name': 'Gardenia White Bread', 'description': 'Just a white bread.', 'price': 3.00, 'image_path': './img/breads/gardenia.webp', 'category': 'breads'},
-        {'name': 'Sunshine White Bread', 'description': 'White Bread from Sunshine!', 'price': 2.80, 'image_path': './img/breads/sunshine.webp', 'category': 'breads'},
-        {'name': 'Sunshine Whole Grain', 'description': 'Very Healthy Bread!', 'price': 3.80, 'image_path': './img/breads/wholegrain.webp', 'category': 'breads'},
+        {'name': 'Milo', 'description': 'Chocolate Malt Drink', 'price': 4.99, 'image_path': '/images/drinks/milo.jpg', 'category': 'drinks'},
+        {'name': '100 Plus', 'description': 'Isotonic Drink', 'price': 8.99, 'image_path': '/images/drinks/100plus.jpg', 'category': 'drinks'},
+        {'name': 'Oolong Tea', 'description': 'Tea Brewed from the Mountains', 'price': 3.99, 'image_path': '/images/drinks/oolong.jpg', 'category': 'drinks'},
+        {'name': 'Dasani Water', 'description': 'Mineral Water', 'price': 1.50, 'image_path': '/images/drinks/dasani.jpg', 'category': 'drinks'},
+        {'name': 'Cheese', 'description': 'Made from Real Cow!', 'price': 12.99, 'image_path': '/images/dairy/cheese.jpg', 'category': 'dairy'},
+        {'name': 'Egg', 'description': 'Packed with nutrients!', 'price': 3.50, 'image_path': '/images/dairy/egg.jpg', 'category': 'dairy'},
+        {'name': 'Milk', 'description': 'Made from Real Cow!', 'price': 6.45, 'image_path': '/images/dairy/milk.jpg', 'category': 'dairy'},
+        {'name': 'Gardenia White Bread', 'description': 'Just a white bread.', 'price': 3.00, 'image_path': '/images/breads/gardenia.jpg', 'category': 'breads'},
+        {'name': 'Sunshine White Bread', 'description': 'White Bread from Sunshine!', 'price': 2.80, 'image_path': '/images/breads/sunshine.jpg', 'category': 'breads'},
+        {'name': 'Sunshine Whole Grain', 'description': 'Very Healthy Bread!', 'price': 3.80, 'image_path': '/images/breads/wholegrain.jpg', 'category': 'breads'},
     ]
 
     for product in products:
@@ -105,8 +106,9 @@ def get_products():
             "image": product.image,
             "category": product.category
         } for product in products]
-
-    return jsonify(results)
+    response = jsonify(results)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 # create a new product
 @app.route('/products', methods=['POST'])
