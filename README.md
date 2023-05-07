@@ -58,7 +58,7 @@ React App is hosted on:
 https://moonlit-kitten-862a7c.netlify.app/
 ```
 
-### Things to improve on
+## Things to improve on
 Due to time constraints, some function was not implemented which i will do so at my own time at a later date.
 - Authentication using Flask JWT
 - Login and Signup on frontend
@@ -66,3 +66,9 @@ Due to time constraints, some function was not implemented which i will do so at
 - Product quantity
 - Sort product by price
 - Better overall frontend design.
+
+## Additional
+The API endpoint details can be found here:
+```
+https://documenter.getpostman.com/view/19186591/2s93eYTWxE
+```
