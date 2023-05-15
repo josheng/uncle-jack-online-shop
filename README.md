@@ -50,13 +50,22 @@ npm start
 ## Hosting
 Backend Flask API is hosted on:
 - DB was changed from PSQL to MySQL as postgres requires a paid subscription
+<strike>
+
 ```
 engch28.pythonanywhere.com
 ```
+
+</strike>
+
 React App is hosted on:
+<strike>
+  
 ```
 https://moonlit-kitten-862a7c.netlify.app/
 ```
+  
+</strike>
 
 ## Things to improve on
 Due to time constraints, some function was not implemented which i will do so at my own time at a later date.
